@@ -10,21 +10,11 @@ function colour(space) {
             return 'red';
             break;
         case 2:
-            return 'indianred';
+            return 'blue';
             break;
         default:
             return false;
     }
-}
-
-function arrayIncludes(needle, haystack) {
-    let includes = false;
-    haystack.forEach((element) => {
-        if (JSON.stringify(element) === JSON.stringify(needle)) {
-            includes = true;
-        }
-    });
-    return includes;
 }
 
 class Board {
@@ -32,21 +22,19 @@ class Board {
         // Initial board state
         this.board =
             [
-                [-1,-1,-1,-1,-1,-1,-1,-1,-1],
-                [-1,-1,-1,1,1,1,-1,-1,-1],
-                [-1,-1,-1,1,1,1,-1,-1,-1],
-                [-1,1,1,1,1,1,1,1,-1],
-                [-1,1,1,1,0,1,1,1,-1],
-                [-1,1,1,1,1,1,1,1,-1],
-                [-1,-1,-1,1,1,1,-1,-1,-1],
-                [-1,-1,-1,1,1,1,-1,-1,-1],
-                [-1,-1,-1,-1,-1,-1,-1,-1,-1]
-            ];
+              [-1,-1,-1,-1,-1,-1,-1,-1,-1],
+              [-1,-1,-1,1,1,1,-1,-1,-1],
+              [-1,-1,-1,1,1,1,-1,-1,-1],
+              [-1,1,1,1,1,1,1,1,-1],
+              [-1,1,1,1,0,1,1,1,-1],
+              [-1,1,1,1,1,1,1,1,-1],
+              [-1,-1,-1,1,1,1,-1,-1,-1],
+              [-1,-1,-1,1,1,1,-1,-1,-1],
+              [-1,-1,-1,-1,-1,-1,-1,-1,-1]
+          ];
 
-        // Container the board is in.
+        this.validMoves = []
         this.container = document.getElementById('container');
-
-        this.validMoves = [];
     }
 
     render() {
@@ -57,19 +45,21 @@ class Board {
                 let td = document.createElement('td');
                 let space = document.createElement('div');
                 space.className = 'space';
-                if (arrayIncludes([rowIndex, columnIndex], this.validMoves)) {  // Space to move to.
-                    space.style.backgroundColor = colour(2);
-                } else {
-                    space.style.backgroundColor = colour(column);
-                    space.onclick = () => {
-                      if (column === 1) {
-                        this.clickedOn = [columnIndex, rowIndex];
-                        this.checkValid();
-                      }
-                      else if (column == 0)
-                        movePeg(columnIndex, rowIndex);
-                    };
-                }
+                space.style.backgroundColor = colour(column);
+                space.onmouseenter = () => {
+
+                };
+                space.onmouseleave = () => {
+
+                };
+                space.onclick = () => {
+                  if (column === 1) {
+                    this.clickedOn = [columnIndex, rowIndex];
+                    this.checkValid();
+                  }
+                  else if (column == 0)
+                    movePeg(columnIndex, rowIndex);
+                };
                 td.appendChild(space);
                 tr.appendChild(td)
             });
@@ -83,20 +73,20 @@ class Board {
       this.validMoves = [];
       // UP, DOWN, LEFT, RIGHT
       if (this.board[this.clickedOn[0]][this.clickedOn[1] + 1] == 1 && this.board[this.clickedOn[0]][this.clickedOn[1] + 2] == 0)
-        this.validMoves.push([this.clickedOn[0], this.clickedOn[1] + 2])
+        this.validMoves.push(this.clickedOn[0], this.clickedOn[1] + 2)
       else if (this.board[this.clickedOn[0]][this.clickedOn[1] - 1] == 1 && this.board[this.clickedOn[0]][this.clickedOn[1] - 2] == 0)
-        this.validMoves.push([this.clickedOn[0], this.clickedOn[1] - 2])
+        this.validMoves.push(this.clickedOn[0], this.clickedOn[1] - 2)
       else if (this.board[this.clickedOn[0] + 1][this.clickedOn[1]] == 1 && this.board[this.clickedOn[0] + 2][this.clickedOn[1]] == 0)
-        this.validMoves.push([this.clickedOn[0] + 2, this.clickedOn[1]])
+        this.validMoves.push(this.clickedOn[0] + 2, this.clickedOn[1])
       else if (this.board[this.clickedOn[0] - 1][this.clickedOn[1]] == 1 && this.board[this.clickedOn[0] - 2][this.clickedOn[1]] == 0)
-        this.validMoves.push([this.clickedOn[0] - 2, this.clickedOn[1]])
+        this.validMoves.push(this.clickedOn[0] - 2, this.clickedOn[1])
 
-      this.render()
+      console.log(this.validMoves);
     }
 
-    // movePeg(spaceX, spaceY) {
-    //   if (this.clickedOn)
-    // }
+    movePeg(spaceX, spaceY) {
+
+    }
 
 }
 
