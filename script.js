@@ -18,12 +18,13 @@ function colour(space) {
 }
 
 function arrayIncludes(needle, haystack) {
+    let includes = false;
     haystack.forEach((element) => {
-        if (element === needle) {
-            return true;
+        if (JSON.stringify(element) === JSON.stringify(needle)) {
+            includes = true;
         }
     });
-    return false;
+    return includes;
 }
 
 class Board {
@@ -56,10 +57,8 @@ class Board {
                 let td = document.createElement('td');
                 let space = document.createElement('div');
                 space.className = 'space';
-                console.log(rowIndex,columnIndex);
                 if (arrayIncludes([rowIndex, columnIndex], this.validMoves)) {  // Space to move to.
                     space.style.backgroundColor = colour(2);
-                    alert(1);
                 } else {
                     space.style.backgroundColor = colour(column);
                 }
