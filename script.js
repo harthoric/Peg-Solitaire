@@ -50,53 +50,68 @@ class Board {
     }
 
     render() {
-        let table = document.createElement('table');
-        this.board.forEach((row, rowIndex) => {
-            let tr = document.createElement('tr');
-            row.forEach((column, columnIndex) => {
-                let td = document.createElement('td');
-                let space = document.createElement('div');
-                space.className = 'space';
-                if (arrayIncludes([rowIndex, columnIndex], this.validMoves)) {  // Space to move to.
-                    space.style.backgroundColor = colour(2);
-                } else {
-                    space.style.backgroundColor = colour(column);
-                    space.onclick = () => {
-                      if (column === 1) {
-                        this.clickedOn = [columnIndex, rowIndex];
-                        this.checkValid();
+          let table = document.createElement('table');
+          this.board.forEach((row, rowIndex) => {
+              let tr = document.createElement('tr');
+              row.forEach((column, columnIndex) => {
+                  let td = document.createElement('td');
+                  let space = document.createElement('div');
+                  space.className = 'space';
+                  if (arrayIncludes([rowIndex, columnIndex], this.validMoves)) {  // Space to move to.
+                      space.style.backgroundColor = colour(2);
+                      space.onclick = () => {
+                          this.movePeg(rowIndex, columnIndex);
                       }
-                      else if (column == 0)
-                        movePeg(columnIndex, rowIndex);
-                    };
-                }
-                td.appendChild(space);
-                tr.appendChild(td)
-            });
-            table.appendChild(tr);
-        });
-        this.container.innerHTML = '';
-        this.container.appendChild(table)
-    }
+                  } else {
+                      space.style.backgroundColor = colour(column);
+                      if (column === 1) {
+                          space.onclick = () => {
+                              this.clickedOn = [columnIndex, rowIndex];
+                              this.checkValid();
+                          };
+                      }
+                  }
+                  td.appendChild(space);
+                  tr.appendChild(td)
+              });
+              table.appendChild(tr);
+          });
+          this.container.innerHTML = '';
+          this.container.appendChild(table)
+      }
 
     checkValid() {
       this.validMoves = [];
       // UP, DOWN, LEFT, RIGHT
       if (this.board[this.clickedOn[0]][this.clickedOn[1] + 1] == 1 && this.board[this.clickedOn[0]][this.clickedOn[1] + 2] == 0)
         this.validMoves.push([this.clickedOn[0], this.clickedOn[1] + 2])
-      else if (this.board[this.clickedOn[0]][this.clickedOn[1] - 1] == 1 && this.board[this.clickedOn[0]][this.clickedOn[1] - 2] == 0)
+      if (this.board[this.clickedOn[0]][this.clickedOn[1] - 1] == 1 && this.board[this.clickedOn[0]][this.clickedOn[1] - 2] == 0)
         this.validMoves.push([this.clickedOn[0], this.clickedOn[1] - 2])
-      else if (this.board[this.clickedOn[0] + 1][this.clickedOn[1]] == 1 && this.board[this.clickedOn[0] + 2][this.clickedOn[1]] == 0)
+      if (this.board[this.clickedOn[0] + 1][this.clickedOn[1]] == 1 && this.board[this.clickedOn[0] + 2][this.clickedOn[1]] == 0)
         this.validMoves.push([this.clickedOn[0] + 2, this.clickedOn[1]])
-      else if (this.board[this.clickedOn[0] - 1][this.clickedOn[1]] == 1 && this.board[this.clickedOn[0] - 2][this.clickedOn[1]] == 0)
+      if (this.board[this.clickedOn[0] - 1][this.clickedOn[1]] == 1 && this.board[this.clickedOn[0] - 2][this.clickedOn[1]] == 0)
         this.validMoves.push([this.clickedOn[0] - 2, this.clickedOn[1]])
 
-      this.render()
+      console.log(this.validMoves);
+      this.render();
     }
 
-    // movePeg(spaceX, spaceY) {
-    //   if (this.clickedOn)
-    // }
+    movePeg(spaceX, spaceY) {
+      this.board[spaceY][spaceX] = 1;
+      if (spaceX === this.clickedOn[0]) {
+        this.board[this.clickedOn[1]][this.clickedOn[0]] = 0;
+        this.board[spaceY > this.clickedOn[1] ? spaceY - 1 : spaceY + 1][spaceX] = 0;
+      } else if (spaceY === this.clickedOn[1]) {
+        this.board[this.clickedOn[1]][this.clickedOn[0]] = 0;
+        this.board[spaceY][spaceX > this.clickedOn[0] ? spaceX - 1 : spaceX + 1] = 0;
+      }
+
+      console.log(this.board)
+      this.clickedOn = [];
+      this.validMoves = [];
+      this.render();
+
+    }
 
 }
 
