@@ -9,9 +9,21 @@ function colour(space) {
         case 1:
             return 'red';
             break;
+        case 2:
+            return 'indianred';
+            break;
         default:
             return false;
     }
+}
+
+function arrayIncludes(needle, haystack) {
+    haystack.forEach((element) => {
+        if (element === needle) {
+            return true;
+        }
+    });
+    return false;
 }
 
 class Board {
@@ -19,16 +31,21 @@ class Board {
         // Initial board state
         this.board =
             [
-                [-1,-1,1,1,1,-1,-1],
-                [-1,-1,1,1,1,-1,-1],
-                [1,1,1,1,1,1,1],
-                [1,1,1,0,1,1,1],
-                [1,1,1,1,1,1,1],
-                [-1,-1,1,1,1,-1,-1],
-                [-1,-1,1,1,1,-1,-1]
+                [-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                [-1,-1,-1,1,1,1,-1,-1,-1],
+                [-1,-1,-1,1,1,1,-1,-1,-1],
+                [-1,1,1,1,1,1,1,1,-1],
+                [-1,1,1,1,0,1,1,1,-1],
+                [-1,1,1,1,1,1,1,1,-1],
+                [-1,-1,-1,1,1,1,-1,-1,-1],
+                [-1,-1,-1,1,1,1,-1,-1,-1],
+                [-1,-1,-1,-1,-1,-1,-1,-1,-1]
             ];
 
+        // Container the board is in.
         this.container = document.getElementById('container');
+
+        this.validMoves = [[4,4]];
     }
 
     render() {
@@ -39,16 +56,13 @@ class Board {
                 let td = document.createElement('td');
                 let space = document.createElement('div');
                 space.className = 'space';
-                space.style.backgroundColor = colour(column);
-                space.onmouseenter = () => {
-
-                };
-                space.onmouseleave = () => {
-
-                };
-                space.onclick = () => {
-
-                };
+                console.log(rowIndex,columnIndex);
+                if (arrayIncludes([rowIndex, columnIndex], this.validMoves)) {  // Space to move to.
+                    space.style.backgroundColor = colour(2);
+                    alert(1);
+                } else {
+                    space.style.backgroundColor = colour(column);
+                }
                 td.appendChild(space);
                 tr.appendChild(td)
             });
