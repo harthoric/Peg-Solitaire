@@ -99,11 +99,13 @@ class Board {
     movePeg(spaceY, spaceX) {
         this.board[spaceY][spaceX] = 1;
         if (spaceX === this.clickedOn[1]) {
+        	console.log("VERTICAL")
             this.board[this.clickedOn[0]][this.clickedOn[1]] = 0;
-            this.board[spaceY < this.clickedOn[1] ? spaceY - 1 : spaceY + 1][spaceX] = 0;
+            this.board[spaceY < this.clickedOn[0] ? spaceY + 1 : spaceY - 1][spaceX] = 0;
         } else if (spaceY === this.clickedOn[0]) {
+        	console.log("HORIZONTAL")
             this.board[this.clickedOn[0]][this.clickedOn[1]] = 0;
-            this.board[spaceY][spaceX < this.clickedOn[0] ? spaceX - 1 : spaceX + 1] = 0;
+            this.board[spaceY][spaceX > this.clickedOn[1] ? spaceX - 1 : spaceX + 1] = 0;
         }
 
         this.clickedOn = [];
